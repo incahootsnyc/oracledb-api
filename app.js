@@ -4,9 +4,9 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const winston = require('winston');
-const fileDirectory = require('./helpers/recursiveDirectory');
+const fileDirectory = require('./helpers/fileDirectory');
 const fileTree = fileDirectory.getFilesRecursive(path.join(__dirname, 'routes'));
-const filePaths = fileDirectory.getRequirePathsRecursive(fileTree);
+const filePaths = fileDirectory.getRequirePaths(fileTree);
 const errorlogger = new winston.Logger({
     level: 'error',
     transports: [
