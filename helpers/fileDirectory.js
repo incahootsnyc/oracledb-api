@@ -9,10 +9,11 @@ const directoryHelper = {
     const fileContents = fs.readdirSync(folder);
 
     const fileTree = fileContents.map(name => {
-      const stats = fs.lstatSync(folder + '/' + name);
+      const path = `${folder}/${name}`;
+      const stats = fs.lstatSync(path);
 
       if (stats.isDirectory()) {
-        return { name, children: _this.getFilesRecursive(folder + '/' + name) };
+        return { name, children: _this.getFilesRecursive(path) };
       } else {
         return { name };
       }
