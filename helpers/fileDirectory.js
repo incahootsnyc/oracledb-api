@@ -21,27 +21,21 @@ const directoryHelper = {
     return fileTree;
   },
 
-  getRequirePaths: function(fileTree) {
+  flatten: function(arrayOfArrays) {
+    return arrayOfArrays.reduce((flattened, item) =>
+      flattened.concat(Array.isArray(item) ? this.flatten(item) : [item]), []);
+  },
 
-    const buildRoute = (branch) => {
-      if (!branch.children) return [branch.name];
+  getRequirePaths: function(fileTree, parent) {
 
-      const namesArray = branch.children.map((file) => {
-        if (!file.children) {
-          return `${branch.name}/${file.name}`;
-        } 
-          
-        return `${branch.name}/${buildRoute(file)}`;
-      });
-  
-      return namesArray;
-    };
+    const routes = fileTree.map(branch => {
+      if (!branch.children) return (parent || '')+ '/' +branch.name;
 
-    const routes = fileTree.map(buildRoute).reduce((acc, arr) => {
-      return acc.concat(arr);
-    }, []);
+      const parentPath = (parent || '') + '/' + branch.name;
+      return this.getRequirePaths(branch.children, parentPath);
+    });
 
-    return routes;
+    return this.flatten(routes);
   }
   
 }

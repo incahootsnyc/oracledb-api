@@ -30,7 +30,7 @@ app.use( (req,res,next) => {
 
 // dynamically register all routes
 filePaths.forEach(filePath => {
-    const router = require('./routes/' + filePath);
+    const router = require('./routes' + filePath);
     app.use(router);
 });
 
