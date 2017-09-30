@@ -26,13 +26,12 @@ const directoryHelper = {
       flattened.concat(Array.isArray(item) ? this.flatten(item) : [item]), []);
   },
 
-  getRequirePaths: function(fileTree, parent) {
+  getRequirePaths: function(fileTree, parentPath) {
 
     const routes = fileTree.map(branch => {
-      if (!branch.children) return (parent || '')+ '/' +branch.name;
-
-      const parentPath = (parent || '') + '/' + branch.name;
-      return this.getRequirePaths(branch.children, parentPath);
+      const path = `${(parentPath || '')}/${branch.name}`;
+      if (!branch.children) return path;
+      return this.getRequirePaths(branch.children, path);
     });
 
     return this.flatten(routes);
