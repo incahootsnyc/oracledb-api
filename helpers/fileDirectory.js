@@ -5,7 +5,6 @@ const fs = require('fs');
 const directoryHelper = {
 
   getFilesRecursive: function(folder) {
-    const _this = this;
     const fileContents = fs.readdirSync(folder);
 
     const fileTree = fileContents.map(name => {
@@ -13,7 +12,7 @@ const directoryHelper = {
       const stats = fs.lstatSync(path);
 
       if (stats.isDirectory()) {
-        return { name, children: _this.getFilesRecursive(path) };
+        return { name, children: this.getFilesRecursive(path) };
       } else {
         return { name };
       }
