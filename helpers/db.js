@@ -1,21 +1,35 @@
-const oracleDbConfig = require('../config').oracledb;
 
-const oracledb = {
+/**
+ * database pals
+ */
 
-  getData: function() {
-    db.getConnection(oracleDbConfig, (err, connection) => {
-      if (err) return console.log(err);
-      this.doRelease(connection);
+const { oracledb: dbconfig } = require('../config');
+
+function getData(db, query, params, options) {
+  db.getConnection(dbconfig, (connErr, connection) => {
+    if (connErr) { 
+      return options.error(connErr); 
+    }
+
+    connection.execute(query, params, (queryError, result) => {
+      if (queryError) {
+        this.doRelease(connection)
+        return options.error(queryError);
+      }
+
+      return options.success(result);
     });
-  },
+  });
+}
 
-  doRelease: function (connection) {
-    connection.close(err => {
-      if (err) console.error(err.message);
-    });
-  }
+function doRelease(connection) {
+  connection.close(err => {
+    if (err) console.error(err.message);
+  });
+}
 
+
+module.exports = {
+  doRelease,
+  getData
 };
-
-
-module.exports = oracledb;
