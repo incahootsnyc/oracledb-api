@@ -10,11 +10,11 @@ router.post(auth, (req, res, next) => {
   const dbquery = query.generate(auth);
   const { username } = req.body;
 
-  db.getData(oracledb, query, [req.body.username], {
-    error: function (error) {
+  db.getData(oracledb, query, [username], {
+    error: (error) => {
       return next(error);
     }, 
-    success: function (result) {
+    success: (result) => {
       if (result.rows.length > 0) {
         const formattedResult = response.format(result)[0];
         const { passwordHash } = crypto.sha512(req.body.password, formattedResult.SLT);
