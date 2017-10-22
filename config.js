@@ -6,6 +6,8 @@ module.exports = {
   },
   jwtSecret: process.env.JWT_SECRET || 'supersecret',
   api: {
-    auth: '/api/authenticate'
-  }
+    auth: '/api/authenticate',
+    latestEntries: '/api/latestEntries'
+  },
+  pageSize: 50
 };

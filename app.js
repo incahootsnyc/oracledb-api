@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // allow local client running on port 3000 to make requests to API
-app.use((req,res,next) => {
+app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin',  "http://localhost:3001");
     res.setHeader('Access-Control-Allow-Headers', 'authorization, Content-Type');
     next();

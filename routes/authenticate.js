@@ -2,15 +2,14 @@ const express = require('express');
 const router = express.Router();
 const oracledb = require('oracledb');
 const jwt = require('jsonwebtoken');
-const config = require('../config');
-const { crypto, db, query, response, utils } = require('../helpers');
-const { api: { auth } } = config;
+const { api: { auth }, jwtSecret } = require('../config');
+const { crypto, db, query, response } = require('../helpers');
 
 router.post(auth, (req, res, next) => {
   const dbquery = query.generate(auth);
-  const { username } = req.body;
+  const { username: UserName } = req.body;
 
-  db.getData(oracledb, query, [username], {
+  db.getData(oracledb, dbquery, { UserName }, {
     error: (error) => {
       return next(error);
     }, 
@@ -24,7 +23,7 @@ router.post(auth, (req, res, next) => {
               data: { 
                 username: formattedResult.USER_NAME 
               }
-          }, config.jwtSecret, { expiresIn: '1h' });
+          }, jwtSecret, { expiresIn: '1h' });
 
           return res.json({ jwt: token, success: true });
         }

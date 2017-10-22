@@ -6,7 +6,7 @@
 const queryMap = {
   
   '/api/authenticate': function () {
-    return '';
+    return 'BEGIN OracleApp.Authenticate_User(:UserName, :out_data); END;';
   },
 
 }
