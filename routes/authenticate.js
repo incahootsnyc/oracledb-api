@@ -6,13 +6,18 @@ const { api: { auth }, jwtSecret } = require('../config');
 const { crypto, db, query, response } = require('../helpers');
 
 router.post(auth, (req, res, next) => {
-  const dbquery = query.generate(auth);
-  const { username: UserName } = req.body;
+  const authQuery = query.generate(auth);
+  const { username } = req.body;
+  const authQueryParams = {
+    UserName: username,
+    out_data: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT }
+  }
 
-  db.getData(oracledb, dbquery, { UserName }, {
+  db.getData(oracledb, authQuery, authQueryParams, {
+    resultSet: [],
     error: (error) => {
       return next(error);
-    }, 
+    },
     success: (result) => {
       if (result.rows.length > 0) {
         const formattedResult = response.format(result)[0];
