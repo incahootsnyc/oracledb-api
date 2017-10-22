@@ -26,7 +26,8 @@ router.post(auth, (req, res, next) => {
         if (passwordHash === formattedResult.PWD) {
           const token = jwt.sign({
               data: { 
-                username: formattedResult.USER_NAME 
+                username: formattedResult.USER_NAME,
+                userId: formattedResult.USER_ID,
               }
           }, jwtSecret, { expiresIn: '1h' });
 
